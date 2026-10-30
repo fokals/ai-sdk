@@ -215,7 +215,7 @@ export const SPECS: readonly (ToolSpec & { key: FokalsToolName })[] = [
     "endpoint": "count_companies",
     "title": "Count companies",
     "paid": false,
-    "description": "Counts the companies that match a set of filters, and says what it would cost to get them. Free. Takes the same filters as findCompanies. Use it before findCompanies, so the person knows the size and the price of what they are asking for.",
+    "description": "Counts the companies that match a set of filters, and says what it would cost to get them. Free. Takes the same filters as findCompanies, but not part of a name: to look for one company, use identifyCompany. Fewer than 10 is given as such. Use it before findCompanies, so the person knows the size and the price of what they are asking for.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -703,7 +703,7 @@ export const SPECS: readonly (ToolSpec & { key: FokalsToolName })[] = [
     "endpoint": "identify_company",
     "title": "Which company is meant",
     "paid": false,
-    "description": "Lists the companies a name or a website address could mean, the surest first, each with its website, country, industry and whether it has been read. Free. Use it when a name is ambiguous or a paid tool said a company is not held, then pass the id of the right one to the other tools.",
+    "description": "Lists the companies a name or a website address could mean, the surest first, each with its website, its country and whether it has been read. Free. Use it when a name is ambiguous or a paid tool said a company is not held, then pass the id of the right one to the other tools.",
     "inputSchema": {
       "type": "object",
       "properties": {
