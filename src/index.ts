@@ -52,6 +52,30 @@ export const companiesLikeCustomers = factory('companiesLikeCustomers');
 export const companyHealth = factory('companyHealth');
 /** The technologies a company is likeliest to add next. */
 export const likelyNext = factory('likelyNext');
+/** The buying topics a company shows signs of, week by week, with the signals behind them. */
+export const intentHistory = factory('intentHistory');
+/** The sales team a company's job ads show, by role, segment and country, with the pay they state. */
+export const salesTeam = factory('salesTeam');
+/** A company's notices of a private fundraise (Form D), with the amounts. */
+export const fundingFilings = factory('fundingFilings');
+/** How many people a company employed over the years. */
+export const headcountHistory = factory('headcountHistory');
+/** How popular a company's website has been, month by month. */
+export const trafficHistory = factory('trafficHistory');
+/** Every buying signal across all companies from a day on. */
+export const signalFeed = factory('signalFeed');
+/** Every announcement across all companies from a day on. */
+export const announcementFeed = factory('announcementFeed');
+/** Every website change across all companies from a day on. */
+export const changeFeed = factory('changeFeed');
+/** Stock listings with their identifiers and the company each belongs to. */
+export const listedSecurities = factory('listedSecurities');
+/** How a measure of the market has moved over time, by industry, country, size or exchange. */
+export const marketTrends = factory('marketTrends');
+/** The market figures that moved most on one day. */
+export const marketMovers = factory('marketMovers');
+/** Advertised sales pay by role and country. */
+export const salesPayBenchmarks = factory('salesPayBenchmarks');
 /** The values the search tools filter by. Free. */
 export const listFilters = factory('listFilters');
 /** The balance, what this month has spent, and the prices. Free. */

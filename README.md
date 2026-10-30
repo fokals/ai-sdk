@@ -72,7 +72,19 @@ Every tool returns the API's own sentence about what it did, as `message`, and t
 | `companiesLikeCustomers` | Companies that look today the way your customers looked when they bought | Paid |
 | `companyHealth` | A company's health this week, with the reasons | Paid |
 | `likelyNext` | The technologies a company is likeliest to add next | Paid |
-| `listFilters` | The values the search tools filter by: technologies, buying topics, industries, countries | Free |
+| `intentHistory` | The buying topics a company shows signs of, week by week, with the signals behind them | Paid |
+| `salesTeam` | The sales team a company's job ads show, by role, segment and country, with the pay they state | Paid |
+| `fundingFilings` | A company's notices of a private fundraise (Form D), with the amounts | Paid |
+| `headcountHistory` | How many people a company employed over the years | Paid |
+| `trafficHistory` | How popular a company's website has been, month by month | Paid |
+| `signalFeed` | Every buying signal across all companies from a day on | Paid |
+| `announcementFeed` | Every announcement across all companies from a day on | Paid |
+| `changeFeed` | Every website change across all companies from a day on | Paid |
+| `listedSecurities` | Stock listings with their identifiers and the company each belongs to | Paid |
+| `marketTrends` | How a measure of the market has moved over time, by industry, country, size or exchange | Paid |
+| `marketMovers` | The market figures that moved most on one day | Paid |
+| `salesPayBenchmarks` | Advertised sales pay by role and country | Paid |
+| `listFilters` | The values the search tools filter by, the market measures and the sales roles | Free |
 | `accountBalance` | The balance, what this month has spent, and the prices | Free |
 
 ## Prices

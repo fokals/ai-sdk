@@ -16,7 +16,7 @@ export type ToolSpec = {
 export const API_VERSION = "v1";
 
 /** Every tool, by the key it has in fokalsTools(). */
-export const TOOL_NAMES = ["findCompanies","countCompanies","enrichCompanies","companyProfile","companyChanges","searchJobPostings","similarCompanies","companyConnections","identifyCompany","marketBreakdown","vendorScorecard","companiesLikeCustomers","companyHealth","likelyNext","listFilters","accountBalance"] as const;
+export const TOOL_NAMES = ["findCompanies","countCompanies","enrichCompanies","companyProfile","companyChanges","searchJobPostings","similarCompanies","companyConnections","identifyCompany","marketBreakdown","vendorScorecard","companiesLikeCustomers","companyHealth","likelyNext","intentHistory","salesTeam","fundingFilings","headcountHistory","trafficHistory","signalFeed","announcementFeed","changeFeed","listedSecurities","marketTrends","marketMovers","salesPayBenchmarks","listFilters","accountBalance"] as const;
 export type FokalsToolName = (typeof TOOL_NAMES)[number];
 
 export const SPECS: readonly (ToolSpec & { key: FokalsToolName })[] = [
@@ -1179,11 +1179,699 @@ export const SPECS: readonly (ToolSpec & { key: FokalsToolName })[] = [
     }
   },
   {
+    "key": "intentHistory",
+    "endpoint": "intent_history",
+    "title": "Buying intent week by week",
+    "paid": true,
+    "description": "The buying topics each of the person's companies has shown signs of, week by week for up to 12 weeks: for each week, each topic with its score from 0 to 100, whether it was surging (rising sharply against the company's own recent weeks) and how many signals were behind it, with the company's latest signals by date and kind. Give a topic to follow just that one. Use it to see whether interest is building or fading, to time an approach, or to explain a score. A company with no intent held costs nothing and is named as such. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "companies": {
+          "minItems": 1,
+          "maxItems": 1000,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": "The person's own companies, each as a website address (\"acme.com\"), a name or an id from an earlier answer. At most 25 a call."
+        },
+        "weeks": {
+          "description": "How many weeks to return, oldest first. 12 unless given.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "topic": {
+          "description": "One buying topic to follow, by name or id: \"Marketing automation\". listFilters with kind buying_topics has them all.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "companies"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "companies": [
+        "stripe.com",
+        "shopify.com"
+      ],
+      "weeks": 8
+    }
+  },
+  {
+    "key": "salesTeam",
+    "endpoint": "sales_team",
+    "title": "Sales team from job ads",
+    "paid": true,
+    "description": "The sales team each of the person's companies is building, as its own job ads show it: open sales roles now by role (SDR or BDR, account executive, account manager, sales engineer, sales leadership, sales operations, partnerships), by the customer segment they sell to and by country; the median base and on-target pay the ads state, by role; the sales tools the ads name; the last twelve closed weeks; and the latest open sales postings with what each states (base, on-target pay, quota, ramp, where leads come from). Pay is what an ad offers, not what is paid. Use it to size a sales team, see where it is expanding or moving upmarket, or benchmark an offer. A company with no sales postings costs nothing and is named as such. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "companies": {
+          "minItems": 1,
+          "maxItems": 1000,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": "The person's own companies, each as a website address (\"acme.com\"), a name or an id from an earlier answer. At most 25 a call."
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "companies"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "companies": [
+        "hubspot.com"
+      ]
+    }
+  },
+  {
+    "key": "fundingFilings",
+    "endpoint": "funding_filings",
+    "title": "Funding filings",
+    "paid": true,
+    "description": "The notices of a private fundraise each of the person's companies has filed with the US securities regulator (Form D), newest first: when it was filed, the amount offered and the amount sold so far, the date of the first sale, the company's industry and place as filed, and whether it amends an earlier notice. A company that has not raised money this way has none. Use it to see how much a company raised and when, beyond what it announced. A company with no filing costs nothing and is named as such. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "companies": {
+          "minItems": 1,
+          "maxItems": 1000,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": "The person's own companies, each as a website address (\"acme.com\"), a name or an id from an earlier answer. At most 25 a call."
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "companies"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "companies": [
+        "stripe.com"
+      ]
+    }
+  },
+  {
+    "key": "headcountHistory",
+    "endpoint": "headcount_history",
+    "title": "Headcount over time",
+    "paid": true,
+    "description": "How many people each of the person's companies employed over the years, oldest first, each figure with the date it is as of and whether it comes from the company's annual report or a public record. Use it to see whether a company is growing or shrinking. A company with no headcount held costs nothing and is named as such. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "companies": {
+          "minItems": 1,
+          "maxItems": 1000,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": "The person's own companies, each as a website address (\"acme.com\"), a name or an id from an earlier answer. At most 25 a call."
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "companies"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "companies": [
+        "shopify.com"
+      ]
+    }
+  },
+  {
+    "key": "trafficHistory",
+    "endpoint": "traffic_history",
+    "title": "Website traffic month by month",
+    "paid": true,
+    "description": "How popular each of the person's companies' websites has been, month by month for up to 13 months: each month, the smallest group of the most visited websites in the world it was in (top 1,000, 5,000, 10,000, 50,000, 100,000, 500,000, 1 million, 5 million, 10 million or 50 million), with the latest month and the trend. A smaller group is more traffic. Use it to see whether a company's audience is growing. A company whose website is not ranked costs nothing and is named as such. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "companies": {
+          "minItems": 1,
+          "maxItems": 1000,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200
+          },
+          "description": "The person's own companies, each as a website address (\"acme.com\"), a name or an id from an earlier answer. At most 25 a call."
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "companies"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "companies": [
+        "stripe.com",
+        "shopify.com"
+      ]
+    }
+  },
+  {
+    "key": "signalFeed",
+    "endpoint": "signal_feed",
+    "title": "Buying signals across companies",
+    "paid": true,
+    "description": "Every buying signal seen across all companies from a day on, oldest first, a page at a time: the day, the company, where it was seen (its website, domain records, job ads, filings or announcements), what kind of signal it is and the buying topics it points to. Narrow it to one buying topic or one kind of source. Use it to watch a topic for new interest as it appears, or to build a list from fresh signals. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "description": "From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "topic": {
+          "description": "Only signals of this buying topic, by name or id: \"Marketing automation\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "source": {
+          "description": "Only signals of this kind: site (the website), dns (the domain records), careers (job ads), filing (regulatory filings), news (announcements).",
+          "type": "string",
+          "enum": [
+            "site",
+            "dns",
+            "careers",
+            "filing",
+            "news"
+          ]
+        },
+        "limit": {
+          "description": "How many signals to return. 50 unless given, 100 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "description": "next_cursor of the answer before, to carry on where it ended.",
+          "type": "string",
+          "maxLength": 500
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    },
+    "example": {
+      "since": "2026-10-20",
+      "topic": "Marketing automation",
+      "limit": 50
+    }
+  },
+  {
+    "key": "announcementFeed",
+    "endpoint": "announcement_feed",
+    "title": "Announcements across companies",
+    "paid": true,
+    "description": "Every announcement companies made about themselves from a day on, newest first, a page at a time: the day, the company, the title, its types (funding, a launch, a partnership, an acquisition, a leadership change, an expansion and more), what a funding announcement states of the round, the leadership roles named, and a link. Narrow it to one type. Use it to catch every funding round or leadership change in a week. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "description": "From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "type": {
+          "description": "Only announcements of this type. listFilters with kind announcement_types has them all.",
+          "type": "string",
+          "enum": [
+            "product_launch",
+            "partnership",
+            "acquisition_made",
+            "acquired_or_merged",
+            "funding_round",
+            "leadership_change",
+            "layoffs_restructuring",
+            "expansion",
+            "incident",
+            "financial_results",
+            "award_or_recognition",
+            "regulatory_or_legal"
+          ]
+        },
+        "limit": {
+          "description": "How many announcements to return. 50 unless given, 100 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "description": "next_cursor of the answer before, to carry on where it ended.",
+          "type": "string",
+          "maxLength": 500
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    },
+    "example": {
+      "since": "2026-10-20",
+      "type": "funding_round",
+      "limit": 50
+    }
+  },
+  {
+    "key": "changeFeed",
+    "endpoint": "change_feed",
+    "title": "Website changes across companies",
+    "paid": true,
+    "description": "Every change seen on company websites from a day on, oldest first, a page at a time, each in plain words: a technology added or dropped, a new market, language, currency, page or app, a price raised or cut, a plan or free plan added or dropped, a change in how the company describes itself. Narrow it to one kind of change. Use it to catch every company that adopted or dropped a tool, or changed its prices, this week. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "description": "From this day on, YYYY-MM-DD. 7 days ago unless given; at most 90 days back.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "category": {
+          "description": "Only changes of this kind: technology (a tool added or dropped), market, language, currency, social, app, page, promo, dns, platform, pricing (a price or plan changed), label (how the company describes itself), identity.",
+          "type": "string",
+          "enum": [
+            "technology",
+            "technology_id",
+            "market",
+            "language",
+            "currency",
+            "social",
+            "app",
+            "page",
+            "promo",
+            "dns",
+            "platform",
+            "pricing",
+            "label",
+            "identity"
+          ]
+        },
+        "limit": {
+          "description": "How many changes to return. 50 unless given, 100 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "description": "next_cursor of the answer before, to carry on where it ended.",
+          "type": "string",
+          "maxLength": 500
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    },
+    "example": {
+      "since": "2026-10-20",
+      "category": "pricing",
+      "limit": 50
+    }
+  },
+  {
+    "key": "listedSecurities",
+    "endpoint": "listed_securities",
+    "title": "Stock listings",
+    "paid": true,
+    "description": "The equity listings held, a page at a time: each with its name, ticker, exchange and market code, its global identifiers (FIGI and share class FIGI, ISIN, LEI), the issuer's country, the type of security, whether it is active or delisted, and the company it belongs to where one is held. Narrow it by exchange, country or status. Use it to map a portfolio or an index to companies. Listings that match no company cost nothing. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "exchange": {
+          "description": "Only listings on this exchange, by its code: \"US\", \"LN\", or a market code such as \"XNAS\".",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10
+        },
+        "country": {
+          "description": "Only listings of issuers from this country, as a two-letter code.",
+          "type": "string",
+          "pattern": "^[A-Za-z]{2}$"
+        },
+        "status": {
+          "description": "active or delisted. Both unless given.",
+          "type": "string",
+          "enum": [
+            "active",
+            "delisted"
+          ]
+        },
+        "limit": {
+          "description": "How many listings to return. 50 unless given, 100 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cursor": {
+          "description": "next_cursor of the answer before, to carry on where it ended.",
+          "type": "string",
+          "maxLength": 500
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    },
+    "example": {
+      "exchange": "US",
+      "status": "active",
+      "limit": 50
+    }
+  },
+  {
+    "key": "marketTrends",
+    "endpoint": "market_trends",
+    "title": "Market trends over time",
+    "paid": true,
+    "description": "How a measure of the market has moved over time, newest first: hiring (new, closed and open roles, pay, seniority, work mode, functions, AI roles), sales hiring and pay, technologies taken up, dropped and in use, pages, markets and languages added, website moves, announcements, buying topics surging, traffic, headcount and stock listings. Each figure is a count, the number of companies it is out of, the rate, the rate the window before, the growth between them, and an index. Cut it by industry, sector, country, company size or exchange, and follow one subject such as a technology. Use it to see what is growing in a market and where. It returns figures, not companies. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "measure": {
+          "type": "string",
+          "enum": [
+            "hiring_new",
+            "hiring_closed",
+            "hiring_open",
+            "hiring_net",
+            "pay_median",
+            "seniority_share",
+            "work_mode_share",
+            "function_share",
+            "ai_role_share",
+            "sales_share",
+            "sales_segment_share",
+            "sales_lead_source_share",
+            "sales_ote_median",
+            "sales_base_median",
+            "tech_added",
+            "tech_removed",
+            "tech_prevalence",
+            "gtm_page_added",
+            "market_added",
+            "language_added",
+            "replatformed",
+            "news_event",
+            "intent_surge",
+            "traffic_up",
+            "traffic_down",
+            "headcount_change_median",
+            "listings_new",
+            "listings_delisted"
+          ],
+          "description": "What is measured. listFilters with kind market_measures lists them with what each counts."
+        },
+        "subject": {
+          "description": "For a measure with subjects, which one: a technology (\"HubSpot\"), a seniority, a work mode, a job function, a type of announcement, a buying topic, a customer segment, a lead source or a page, by name. Every subject unless given.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "by": {
+          "description": "How the market is cut: all (the whole index, unless given), industry, sector, country, size (by employees) or market (a stock exchange, listed companies only).",
+          "type": "string",
+          "enum": [
+            "all",
+            "industry",
+            "sector",
+            "country",
+            "size",
+            "market"
+          ]
+        },
+        "value": {
+          "description": "With by, one value of it: an industry id, a sector, a two-letter country code, a size band (1-10, 11-50, 51-200, 201-1000, 1001-5000, 5000+) or an exchange code. Every value unless given.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "window": {
+          "description": "The window each figure is counted over, in days: 7, 30, 180 or 365. 30 unless given.",
+          "type": "integer",
+          "minimum": 7,
+          "maximum": 365
+        },
+        "since": {
+          "description": "Only figures as of this day or later, YYYY-MM-DD.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "until": {
+          "description": "Only figures as of this day or earlier, YYYY-MM-DD.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "limit": {
+          "description": "How many figures to return. 50 unless given, 200 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "cursor": {
+          "description": "next_cursor of the answer before, to carry on where it ended.",
+          "type": "string",
+          "maxLength": 500
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "required": [
+        "measure"
+      ],
+      "additionalProperties": false
+    },
+    "example": {
+      "measure": "tech_added",
+      "subject": "HubSpot",
+      "by": "industry",
+      "window": 30,
+      "limit": 20
+    }
+  },
+  {
+    "key": "marketMovers",
+    "endpoint": "market_movers",
+    "title": "Biggest market movers",
+    "paid": true,
+    "description": "The market figures that moved most on one day, largest growth first, up or down: which industries, countries, company sizes or exchanges saw the biggest change in hiring, technologies taken up or dropped, buying topics surging, traffic and the rest. Keep to one measure or see every one. Use it to spot what is changing fastest in the market right now. It returns figures, not companies. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "measure": {
+          "description": "Only this measure. Every measure unless given.",
+          "type": "string",
+          "enum": [
+            "hiring_new",
+            "hiring_closed",
+            "hiring_open",
+            "hiring_net",
+            "pay_median",
+            "seniority_share",
+            "work_mode_share",
+            "function_share",
+            "ai_role_share",
+            "sales_share",
+            "sales_segment_share",
+            "sales_lead_source_share",
+            "sales_ote_median",
+            "sales_base_median",
+            "tech_added",
+            "tech_removed",
+            "tech_prevalence",
+            "gtm_page_added",
+            "market_added",
+            "language_added",
+            "replatformed",
+            "news_event",
+            "intent_surge",
+            "traffic_up",
+            "traffic_down",
+            "headcount_change_median",
+            "listings_new",
+            "listings_delisted"
+          ]
+        },
+        "by": {
+          "description": "How the market is cut: industry (unless given), sector, country, size, market or all.",
+          "type": "string",
+          "enum": [
+            "all",
+            "industry",
+            "sector",
+            "country",
+            "size",
+            "market"
+          ]
+        },
+        "window": {
+          "description": "The window each figure is counted over, in days: 7, 30, 180 or 365. 30 unless given.",
+          "type": "integer",
+          "minimum": 7,
+          "maximum": 365
+        },
+        "as_of": {
+          "description": "The day of the figures, YYYY-MM-DD. The latest unless given.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "limit": {
+          "description": "How many figures to return. 25 unless given, 100 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    },
+    "example": {
+      "measure": "hiring_new",
+      "by": "country",
+      "window": 30,
+      "limit": 10
+    }
+  },
+  {
+    "key": "salesPayBenchmarks",
+    "endpoint": "sales_pay_benchmarks",
+    "title": "Sales pay benchmarks",
+    "paid": true,
+    "description": "Advertised sales pay across every company's open sales job ads for one closed week, by role and country: the 25th percentile, median and 75th percentile of the stated base and of the stated on-target pay, in yearly US dollars, with how many ads each is over. Pay is what the ads offer, not what is paid. Use it to benchmark an offer or a sales budget. It returns figures, not companies. Paid from the Fokals balance at the prices on https://api.fokals.com/v1/prices. A call that costs more than the account lets run unasked returns its price instead: tell the person, then call again with max_usd once they agree.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "description": "Only this sales role. listFilters with kind sales_roles has them all. Every role unless given.",
+          "type": "string",
+          "enum": [
+            "sdr_bdr",
+            "account_executive",
+            "account_manager",
+            "sales_engineer",
+            "sales_leadership",
+            "sales_operations",
+            "partnerships_channel"
+          ]
+        },
+        "country": {
+          "description": "Only this country, as a two-letter code, or ALL for every country together. Every country unless given.",
+          "type": "string",
+          "pattern": "^([A-Za-z]{2}|ALL|all)$"
+        },
+        "week": {
+          "description": "The week, by its Monday as YYYY-MM-DD. The latest closed week unless given.",
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "limit": {
+          "description": "How many rows to return. 50 unless given, 200 at most.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        },
+        "max_usd": {
+          "description": "The most the person has agreed to pay for this call, in US dollars. Leave it out unless a call has returned its price and the person agreed to it.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100000
+        }
+      },
+      "additionalProperties": false
+    },
+    "example": {
+      "role": "account_executive",
+      "country": "US"
+    }
+  },
+  {
     "key": "listFilters",
     "endpoint": "list_filters",
     "title": "List filter values",
     "paid": false,
-    "description": "Lists the values findCompanies and countCompanies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the head office's country where it is known, otherwise the main market the company's website serves), and the types of announcement. Free.",
+    "description": "Lists the values findCompanies and countCompanies filter by, with the number of companies under each where it is known: technologies (search by name), buying topics, industries, business models, countries (by the head office's country where it is known, otherwise the main market the company's website serves), and the types of announcement. Also what marketTrends and marketMovers can measure, with how each can be cut and its subjects, and the sales roles. Free.",
     "inputSchema": {
       "type": "object",
       "properties": {
@@ -1195,7 +1883,9 @@ export const SPECS: readonly (ToolSpec & { key: FokalsToolName })[] = [
             "industries",
             "business_models",
             "countries",
-            "announcement_types"
+            "announcement_types",
+            "market_measures",
+            "sales_roles"
           ],
           "description": "Which list to return."
         },
