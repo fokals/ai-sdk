@@ -1,0 +1,60 @@
+{
+  "name": "@fokals/ai-sdk",
+  "version": "0.1.0",
+  "description": "Fokals company intelligence as AI SDK tools to find, enrich and profile companies by technology, hiring, funding, buying intent and company health.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "build": "tsup src/index.ts --format esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "ai",
+    "ai-sdk",
+    "vercel-ai-sdk",
+    "tools",
+    "agents",
+    "fokals",
+    "company-intelligence",
+    "company-data"
+  ],
+  "homepage": "https://www.fokals.com/docs/ai-sdk",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fokals/ai-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fokals/ai-sdk/issues"
+  },
+  "author": "Fokals <partners@fokals.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "peerDependencies": {
+    "ai": "^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "ai": "^7.0.157",
+    "tsup": "^9.0.0",
+    "typescript": "~5.9.3",
+    "vitest": "^5.0.5",
+    "zod": "^4.6.7"
+  }
+}
