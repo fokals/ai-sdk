@@ -1,7 +1,9 @@
 name: publish
 
-# A GitHub release publishes that version to npm. npm trusts this workflow directly
-# (trusted publishing), so no npm token is stored anywhere.
+# A GitHub release stages that version on npm. npm trusts this workflow directly (trusted
+# publishing), so no npm token is stored anywhere. A staged version goes live once the owner
+# approves it on npmjs.com with his security key (npm's recommended setting: the trusted
+# publisher may stage, not publish).
 on:
   release:
     types: [published]
@@ -27,4 +29,4 @@ jobs:
       - run: npm install -g npm@latest
       - run: npm ci
       - run: npm test
-      - run: npm publish --access public --provenance
+      - run: npm stage publish . --access public --provenance
