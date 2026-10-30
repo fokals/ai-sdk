@@ -1,5 +1,5 @@
 export const DEFAULT_BASE_URL = 'https://api.fokals.com/v1';
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 
 export type FokalsOptions = {
   /** The Fokals key. Read from FOKALS_API_KEY unless given. Make one at https://www.fokals.com/account. */
