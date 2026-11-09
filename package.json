@@ -1,7 +1,7 @@
 {
   "name": "@fokals/ai-sdk",
   "version": "0.2.0",
-  "description": "Fokals company intelligence as AI SDK tools to find, enrich and profile companies by technology, hiring, funding, buying intent and company health.",
+  "description": "Fokals Market & Company Intelligence as AI SDK tools: what companies will likely adopt next, company health, buying signals and market feeds, from technology, hiring and funding data.",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
