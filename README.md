@@ -1,5 +1,7 @@
 # @fokals/ai-sdk
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/fokals/ai-sdk/badge)](https://scorecard.dev/viewer/?uri=github.com/fokals/ai-sdk)
+
 [Fokals](https://www.fokals.com) as tools for the [AI SDK](https://ai-sdk.dev).
 
 AI-powered company intelligence on how companies around the world grow, change and compete. Fokals derives advanced signals from company data, covering everything from technology and hiring to funding, buying intent and company health. Refreshed every day and brought together into a clear view of every market.
